@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "workout-tracking"
+version = "0.1.0"
+description = "Extracts workout data from a user-entered English description and saves the performance to a Google Spreadsheet."
+authors = ["Igor Ferreira <iferreira.n01@gmail.com>"]
+readme = "README.md"
+packages = [{include = "workout_tracking"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
