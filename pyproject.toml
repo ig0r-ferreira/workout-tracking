@@ -8,6 +8,9 @@ packages = [{include = "workout_tracking"}]
 
 [tool.poetry.dependencies]
 python = "^3.10"
+pydantic = "^1.10.2"
+python-dotenv = "^0.21.0"
+requests = "^2.28.1"
 
 
 [build-system]
