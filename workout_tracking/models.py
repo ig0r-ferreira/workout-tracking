@@ -45,7 +45,8 @@ class Workout(BaseModel):
         response = requests.post(
             url=settings.SHEETY_ENDPOINT,
             headers={
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Authorization": settings.SHEETY_AUTH
             },
             json={
                 "workout": {
