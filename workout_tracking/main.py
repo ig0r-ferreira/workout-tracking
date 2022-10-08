@@ -1,26 +1,22 @@
-import requests
-from settings import settings
-from typing import Any
-
-
-def extract_workout_data(description: str) -> dict[str, Any]:
-    response = requests.post(
-        url=settings.TRACKER_ENDPOINT,
-        headers={
-            "x-app-id": settings.TRACKER_APP_ID,
-            "x-app-key": settings.TRACKER_APP_KEY
-        },
-        json={
-            "query": description
-        }
-    )
-    response.raise_for_status()
-    return response.json()
+from datetime import datetime
+from models import Exercise, Workout
 
 
 def main() -> None:
     user_description = input("Tell me what exercises you did today: ").strip()
-    print(extract_workout_data(user_description))
+    exercise_data = Exercise.extract_data_from_text(user_description)
+
+    if len(exercise_data) > 0:
+        today = datetime.now()
+
+        for exercise in exercise_data:
+            workout = Workout(
+                date=today.strftime("%d/%m/%Y"),
+                time=today.strftime("%H:%M:%S"),
+                exercise=Exercise.parse_obj(exercise)
+            )
+
+            Workout.save_to_spreadsheet(workout)
 
 
 if __name__ == "__main__":
