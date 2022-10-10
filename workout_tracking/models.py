@@ -1,9 +1,12 @@
 from __future__ import annotations
 
-import requests
-from pydantic import BaseModel, Field, validator
-from settings import settings
 from typing import Any
+
+import requests.exceptions
+from pydantic import BaseModel, Field, validator
+
+from request_handler import Request
+from settings import settings
 
 
 class Exercise(BaseModel):
@@ -20,19 +23,25 @@ class Exercise(BaseModel):
 
     @staticmethod
     def extract_data_from_text(text: str) -> list[dict[str, Any]]:
-        response = requests.post(
+        request = Request(
+            method="POST",
             url=settings.TRACKER_ENDPOINT,
             headers={
-                "x-app-id": settings.TRACKER_APP_ID,
-                "x-app-key": settings.TRACKER_APP_KEY,
-                "Content-Type": "application/json"
+                  "x-app-id": settings.TRACKER_APP_ID,
+                  "x-app-key": settings.TRACKER_APP_KEY,
+                  "Content-Type": "application/json"
             },
             json={
                 "query": text
             }
         )
-        response.raise_for_status()
-        return response.json().get("exercises", [])
+        try:
+            response = request.send()
+        except requests.exceptions.RequestException as err:
+            raise err
+        else:
+            data: dict | None = response.json()
+            return (data or []) and data.get("exercises", [])
 
 
 class Workout(BaseModel):
@@ -42,7 +51,8 @@ class Workout(BaseModel):
 
     @staticmethod
     def save_to_spreadsheet(workout: Workout):
-        response = requests.post(
+        request = Request(
+            method="POST",
             url=settings.SHEETY_ENDPOINT,
             headers={
                 "Content-Type": "application/json",
@@ -55,4 +65,7 @@ class Workout(BaseModel):
                 }
             }
         )
-        response.raise_for_status()
+        try:
+            request.send()
+        except requests.exceptions.RequestException as err:
+            raise err
