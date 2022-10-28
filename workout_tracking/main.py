@@ -1,38 +1,44 @@
 from datetime import datetime
 
-from models import Exercise, Workout
+
+from app import WorkoutTrackingApp
+from models.person import Person
+from settings import load_personal_data, save_personal_data
+from user_interfaces.cli import CLI
+from user_interfaces.ui import UI
+from utils.nutrition_api import NutritionixAPI
+from utils.sheet_api import SheetyAPI
 
 
-def show_error(msg: str) -> None:
-    print(f"\033[1;31mError: {msg}\033[1m")
+def ask_for_personal_data(ui: UI) -> Person:
+    while True:
+        try:
+            person = Person(
+                gender=ui.read_gender(),
+                weight_kg=ui.read_weight(),
+                height_cm=ui.read_height(),
+                age=ui.read_age()
+            )
+        except Exception as error:
+            ui.show_error(str(error))
+        else:
+            return person
 
 
 def main() -> None:
-    user_input = input("Tell me what exercises you did today:").strip()
+    cli = CLI()
 
-    try:
-        exercise_data = Exercise.extract_data_from_text(user_input)
-    except Exception as err:
-        show_error("Unable to extract workout data from your description.\n"
-                   f"{err}")
-    else:
-        if len(exercise_data) > 0:
-            today = datetime.now()
+    personal_data = load_personal_data() or ask_for_personal_data(cli)
 
-            for exercise in exercise_data:
-                try:
-                    workout = Workout(
-                        date=today.strftime("%d/%m/%Y"),
-                        time=today.strftime("%H:%M:%S"),
-                        exercise=Exercise.parse_obj(exercise)
-                    )
-
-                    Workout.save_to_spreadsheet(workout)
-                except Exception as err:
-                    show_error(f"Could not save workout to worksheet.\n"
-                               f"{err}")
-                else:
-                    print(f"Workout saved successfully.\n{workout}")
+    app = WorkoutTrackingApp(
+        ui=cli,
+        nutrition_api=NutritionixAPI(),
+        sheet_api=SheetyAPI(),
+        today=datetime.today(),
+        personal_data=personal_data
+    )
+    app.run()
+    save_personal_data(app.personal_data)
 
 
 if __name__ == "__main__":
