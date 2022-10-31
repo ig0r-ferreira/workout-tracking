@@ -2,6 +2,9 @@ from typing import Protocol
 
 
 class UI(Protocol):
+    def display_logo(self) -> None:
+        raise NotImplementedError()
+
     def read_workouts_description(self) -> str:
         raise NotImplementedError()
 
@@ -22,5 +25,3 @@ class UI(Protocol):
 
     def read_age(self) -> int:
         raise NotImplementedError()
-
-

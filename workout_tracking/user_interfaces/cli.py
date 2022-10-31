@@ -1,3 +1,13 @@
+LOGO = r"""        
+    ___       __            ______              _____     ________                   ______ _____                
+    __ |     / /_______________  /___________  ___  /_    ___  __/____________ _________  /____(_)_____________ _
+    __ | /| / /_  __ \_  ___/_  //_/  __ \  / / /  __/    __  /  __  ___/  __ `/  ___/_  //_/_  /__  __ \_  __ `/
+    __ |/ |/ / / /_/ /  /   _  ,<  / /_/ / /_/ // /_      _  /   _  /   / /_/ // /__ _  ,<  _  / _  / / /  /_/ / 
+    ____/|__/  \____//_/    /_/|_| \____/\__,_/ \__/      /_/    /_/    \__,_/ \___/ /_/|_| /_/  /_/ /_/_\__, /  
+                                                                                                        /____/   
+"""
+
+
 def read_float(msg: str) -> float:
     while True:
         try:
@@ -9,6 +19,10 @@ def read_float(msg: str) -> float:
 
 
 class CLI:
+    @staticmethod
+    def display_logo() -> None:
+        print(LOGO)
+
     @staticmethod
     def read_workouts_description() -> str:
         return input("Tell me what exercises you did today: ").strip()

@@ -16,6 +16,8 @@ class WorkoutTrackingApp:
     personal_data: Person
 
     def run(self) -> None:
+        self.ui.display_logo()
+
         description = self.ui.read_workouts_description()
 
         exercise_data = self.nutrition_api.get_exercises_from_text(
