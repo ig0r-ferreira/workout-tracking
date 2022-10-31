@@ -13,10 +13,13 @@ class WorkoutTrackingApp:
     nutrition_api: NutritionAPI
     sheet_api: SheetAPI
     today: datetime
-    personal_data: Person
+    personal_data: Person | None
 
     def run(self) -> None:
         self.ui.display_logo()
+
+        if self.personal_data is None:
+            self.personal_data = self.ui.ask_for_personal_data()
 
         description = self.ui.read_workouts_description()
 

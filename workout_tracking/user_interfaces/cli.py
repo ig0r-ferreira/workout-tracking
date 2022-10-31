@@ -1,3 +1,6 @@
+from workout_tracking.models.person import Person
+
+
 LOGO = r"""        
     ___       __            ______              _____     ________                   ______ _____                
     __ |     / /_______________  /___________  ___  /_    ___  __/____________ _________  /____(_)_____________ _
@@ -50,3 +53,17 @@ class CLI:
     @staticmethod
     def read_age() -> int:
         return int(read_float("Enter your age: "))
+
+    def ask_for_personal_data(self) -> Person:
+        while True:
+            try:
+                person = Person(
+                    gender=self.read_gender(),
+                    weight_kg=self.read_weight(),
+                    height_cm=self.read_height(),
+                    age=self.read_age()
+                )
+            except Exception as error:
+                self.show_error(str(error))
+            else:
+                return person

@@ -1,5 +1,7 @@
 from typing import Protocol
 
+from workout_tracking.models.person import Person
+
 
 class UI(Protocol):
     def display_logo(self) -> None:
@@ -24,4 +26,7 @@ class UI(Protocol):
         raise NotImplementedError()
 
     def read_age(self) -> int:
+        raise NotImplementedError()
+
+    def ask_for_personal_data(self) -> Person:
         raise NotImplementedError()
