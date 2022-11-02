@@ -3,7 +3,7 @@ from datetime import datetime
 from app import WorkoutTrackingApp
 from cli import CLI
 from nutrition_api import NutritionixAPI
-from settings import load_personal_data, save_personal_data
+from person_controller import load_personal_data, save_personal_data
 from sheet_api import SheetyAPI
 
 

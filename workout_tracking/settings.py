@@ -2,9 +2,7 @@ from pathlib import Path
 from typing import Any
 
 import dotenv
-from pydantic import BaseSettings, HttpUrl, ValidationError
-
-from person import Person
+from pydantic import BaseSettings, HttpUrl
 
 ENV_FILE_PATH = Path(__file__).parent.parent / ".env"
 
@@ -32,7 +30,7 @@ class SheetAPISettings(Settings):
         env_prefix = "SHEET_"
 
 
-class PersonalDataSettings(Settings):
+class PersonSettings(Settings):
     gender: str
     weight_kg: float
     height_cm: float
@@ -43,21 +41,6 @@ class PersonalDataSettings(Settings):
         env_prefix = "MY_"
 
 
-def load_personal_data() -> Person | None:
-    try:
-        personal_data = Person.parse_obj(PersonalDataSettings())
-    except ValidationError as err:
-        return None
-    else:
-        return personal_data
-
-
 def set_env_vars(variables: dict[str, Any]) -> None:
     for key, value in variables.items():
         dotenv.set_key(ENV_FILE_PATH, key.upper(), str(value))
-
-
-def save_personal_data(person: Person) -> None:
-    data = {f"MY_{key}": value for key, value in person.dict().items()}
-    set_env_vars(data)
-
