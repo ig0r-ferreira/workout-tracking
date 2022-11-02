@@ -2,8 +2,7 @@ from typing import Any, Protocol
 
 import requests
 
-from workout_tracking.settings import SheetAPISettings
-
+from settings import SheetAPISettings
 
 Row = dict[str, Any]
 

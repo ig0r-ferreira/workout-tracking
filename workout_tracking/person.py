@@ -1,6 +1,5 @@
 from pydantic import BaseModel, Field, validator
 
-
 ACCEPTED_GENRES: dict[str, str] = {
     "m": "male",
     "male": "male",

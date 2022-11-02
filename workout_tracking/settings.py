@@ -1,11 +1,10 @@
 from pathlib import Path
 from typing import Any
 
-from models.person import Person
-
 import dotenv
 from pydantic import BaseSettings, HttpUrl, ValidationError
 
+from person import Person
 
 ENV_FILE_PATH = Path(__file__).parent.parent / ".env"
 

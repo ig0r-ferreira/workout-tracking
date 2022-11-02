@@ -1,10 +1,10 @@
 from dataclasses import dataclass
 from datetime import datetime
 
-from workout_tracking.models.person import Person
-from user_interfaces.ui import UI
-from utils.nutrition_api import NutritionAPI
-from workout_tracking.utils.sheet_api import SheetAPI
+from nutrition_api import NutritionAPI
+from person import Person
+from sheet_api import SheetAPI
+from ui import UI
 
 
 @dataclass

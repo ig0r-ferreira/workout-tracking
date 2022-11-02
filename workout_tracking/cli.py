@@ -1,5 +1,4 @@
-from workout_tracking.models.person import Person
-
+from person import Person
 
 LOGO = r"""        
     ___       __            ______              _____     ________                   ______ _____                

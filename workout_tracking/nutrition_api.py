@@ -1,7 +1,8 @@
 from typing import Any, Protocol
 
 import requests
-from workout_tracking.settings import NutritionAPISettings
+
+from settings import NutritionAPISettings
 
 
 class NutritionAPI(Protocol):

@@ -1,11 +1,10 @@
 from datetime import datetime
 
-
 from app import WorkoutTrackingApp
+from cli import CLI
+from nutrition_api import NutritionixAPI
 from settings import load_personal_data, save_personal_data
-from user_interfaces.cli import CLI
-from utils.nutrition_api import NutritionixAPI
-from utils.sheet_api import SheetyAPI
+from sheet_api import SheetyAPI
 
 
 def main() -> None:
