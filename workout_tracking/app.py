@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
+from typing import Any
 
 from nutrition_api import NutritionAPI
 from person import Person
@@ -15,17 +16,34 @@ class WorkoutTrackingApp:
     today: datetime
     personal_data: Person | None
 
+    def register_workouts(self, workout_data: list[dict[str, Any]]) -> None:
+        try:
+            self.sheet_api.add_rows_in_sheet(
+                sheet_name="workouts",
+                obj_name="workout",
+                rows=workout_data
+            )
+        except Exception as exc:
+            self.ui.show_error(str(exc))
+        else:
+            self.ui.display_success_msg()
+
     def run(self) -> None:
         self.ui.display_logo()
 
         if self.personal_data is None:
             self.personal_data = self.ui.ask_for_personal_data()
 
-        description = self.ui.read_workouts_description()
+        workouts_info = self.ui.read_workouts_info()
 
         exercise_data = self.nutrition_api.get_exercises_from_text(
-            text=description, **self.personal_data.dict()
+            text=workouts_info,
+            personal_data=self.personal_data.dict()
         )
+
+        if not exercise_data:
+            self.ui.display_no_exercise_msg()
+            return
 
         workout_data = [
             {
@@ -38,11 +56,4 @@ class WorkoutTrackingApp:
             for exercise in exercise_data
         ]
 
-        self.sheet_api.add_rows_in_sheet(
-            sheet_name="workouts",
-            obj_name="workout",
-            rows=workout_data
-        )
-        self.ui.display_success_msg(
-            "Data successfully saved to the spreadsheet."
-        )
+        self.register_workouts(workout_data)

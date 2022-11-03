@@ -27,5 +27,6 @@ class SheetyAPI(SheetAPISettings):
                 },
                 json={
                     obj_name: row
-                }
+                },
+                timeout=10
             )

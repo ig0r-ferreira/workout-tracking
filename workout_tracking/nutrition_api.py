@@ -9,10 +9,7 @@ class NutritionAPI(Protocol):
     def get_exercises_from_text(
             self,
             text: str,
-            gender: str = None,
-            weight_kg: float = None,
-            height_cm: float = None,
-            age: int = None
+            personal_data: dict[str, Any]
     ) -> list[dict[str, Any]]:
         raise NotImplementedError()
 
@@ -21,10 +18,7 @@ class NutritionixAPI(NutritionAPISettings):
     def get_exercises_from_text(
             self,
             text: str,
-            gender: str = None,
-            weight_kg: float = None,
-            height_cm: float = None,
-            age: int = None
+            personal_data: dict[str, Any]
     ) -> list[dict[str, Any]]:
         response = requests.post(
             url=self.ENDPOINT,
@@ -35,11 +29,9 @@ class NutritionixAPI(NutritionAPISettings):
             },
             json={
                 "query": text,
-                "gender": gender,
-                "weight_kg": weight_kg,
-                "height_cm": height_cm,
-                "age": age
-            }
+                **personal_data
+            },
+            timeout=10
         )
-        data: dict | None = response.json()
+        data = response.json()
         return (data or []) and data.get("exercises", [])

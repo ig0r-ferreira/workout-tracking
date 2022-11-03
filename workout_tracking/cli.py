@@ -1,12 +1,12 @@
 from person import Person
 
 LOGO = r"""        
-    ___       __            ______              _____     ________                   ______ _____                
-    __ |     / /_______________  /___________  ___  /_    ___  __/____________ _________  /____(_)_____________ _
-    __ | /| / /_  __ \_  ___/_  //_/  __ \  / / /  __/    __  /  __  ___/  __ `/  ___/_  //_/_  /__  __ \_  __ `/
-    __ |/ |/ / / /_/ /  /   _  ,<  / /_/ / /_/ // /_      _  /   _  /   / /_/ // /__ _  ,<  _  / _  / / /  /_/ / 
-    ____/|__/  \____//_/    /_/|_| \____/\__,_/ \__/      /_/    /_/    \__,_/ \___/ /_/|_| /_/  /_/ /_/_\__, /  
-                                                                                                        /____/   
+___       __            ______              _____     ________                   ______ _____                
+__ |     / /_______________  /___________  ___  /_    ___  __/____________ _________  /____(_)_____________ _
+__ | /| / /_  __ \_  ___/_  //_/  __ \  / / /  __/    __  /  __  ___/  __ `/  ___/_  //_/_  /__  __ \_  __ `/
+__ |/ |/ / / /_/ /  /   _  ,<  / /_/ / /_/ // /_      _  /   _  /   / /_/ // /__ _  ,<  _  / _  / / /  /_/ / 
+____/|__/  \____//_/    /_/|_| \____/\__,_/ \__/      /_/    /_/    \__,_/ \___/ /_/|_| /_/  /_/ /_/_\__, /  
+                                                                                                    /____/   
 """
 
 
@@ -14,8 +14,8 @@ def read_float(msg: str) -> float:
     while True:
         try:
             value = float(input(msg))
-        except ValueError:
-            raise ValueError("The value entered is not a number.")
+        except ValueError as exc:
+            raise ValueError("The value entered is not a number.") from exc
         else:
             return value
 
@@ -25,17 +25,28 @@ class CLI:
     def display_logo() -> None:
         print(LOGO)
 
-    @staticmethod
-    def read_workouts_description() -> str:
-        return input("Tell me what exercises you did today: ").strip()
+    def read_workouts_info(self) -> str:
+        while True:
+            workouts_info = input(
+                "Tell me what exercises you did today: "
+            ).strip()
+            
+            if workouts_info:
+                return workouts_info
+
+            self.show_error("Empty description. Try again!")
 
     @staticmethod
     def show_error(msg: str) -> None:
         print(f"\033[1;31mError: {msg}\033[m")
 
     @staticmethod
-    def display_success_msg(msg: str) -> None:
-        print(msg)
+    def display_success_msg() -> None:
+        print("Data successfully saved to the spreadsheet.")
+
+    @staticmethod
+    def display_no_exercise_msg() -> None:
+        print("No exercises were identified in its description.")
 
     @staticmethod
     def read_gender() -> str:
