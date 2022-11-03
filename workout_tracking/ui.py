@@ -1,3 +1,4 @@
+from enum import Enum, EnumMeta
 from typing import Protocol
 
 from person import Person
@@ -5,6 +6,12 @@ from person import Person
 
 class UI(Protocol):
     def display_logo(self) -> None:
+        raise NotImplementedError()
+
+    def display_menu(self, menu: EnumMeta) -> None:
+        raise NotImplementedError()
+
+    def read_menu_option(self, menu: EnumMeta) -> Enum:
         raise NotImplementedError()
 
     def read_workouts_info(self) -> str:
@@ -32,4 +39,7 @@ class UI(Protocol):
         raise NotImplementedError()
 
     def ask_for_personal_data(self) -> Person:
+        raise NotImplementedError()
+
+    def display_personal_data(self, person: Person) -> None:
         raise NotImplementedError()

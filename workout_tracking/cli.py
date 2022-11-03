@@ -1,3 +1,5 @@
+from enum import Enum, EnumMeta
+
 from person import Person
 
 LOGO = r"""        
@@ -7,7 +9,7 @@ __ | /| / /_  __ \_  ___/_  //_/  __ \  / / /  __/    __  /  __  ___/  __ `/  __
 __ |/ |/ / / /_/ /  /   _  ,<  / /_/ / /_/ // /_      _  /   _  /   / /_/ // /__ _  ,<  _  / _  / / /  /_/ / 
 ____/|__/  \____//_/    /_/|_| \____/\__,_/ \__/      /_/    /_/    \__,_/ \___/ /_/|_| /_/  /_/ /_/_\__, /  
                                                                                                     /____/   
-"""
+"""  # noqa: E501, W291
 
 
 def read_float(msg: str) -> float:
@@ -25,12 +27,28 @@ class CLI:
     def display_logo() -> None:
         print(LOGO)
 
+    def display_menu(self, menu: EnumMeta) -> None:
+        for option in menu:
+            print(f"{option.value} - {option.name.replace('_', ' ')}")
+
+    def read_menu_option(self, menu: EnumMeta) -> Enum:
+        print()
+        while True:
+            user_option = input("Which option do you want: ")
+            try:
+                return menu(int(user_option))
+            except ValueError:
+                self.show_error(
+                    "Invalid option. Select one of the options "
+                    "available from the menu."
+                )
+
     def read_workouts_info(self) -> str:
         while True:
             workouts_info = input(
                 "Tell me what exercises you did today: "
             ).strip()
-            
+
             if workouts_info:
                 return workouts_info
 
@@ -73,7 +91,12 @@ class CLI:
                     height_cm=self.read_height(),
                     age=self.read_age()
                 )
-            except Exception as error:
-                self.show_error(str(error))
+            except Exception as exc:
+                self.show_error(str(exc))
             else:
                 return person
+
+    @staticmethod
+    def display_personal_data(person: Person) -> None:
+        for key, value in person:
+            print(f"{key.upper()}: {value}")
