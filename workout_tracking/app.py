@@ -96,6 +96,7 @@ class WorkoutTrackingApp:
                 case MenuOptions.CHANGE_PERSONAL_DATA:
                     self.change_personal_data()
                 case MenuOptions.EXIT:
+                    self.ui.display_closing_msg()
                     return
                 case _:
                     self.ui.show_error("Option not found in the menu.")

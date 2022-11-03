@@ -17,8 +17,13 @@ def main() -> None:
         today=datetime.today(),
         personal_data=load_personal_data()
     )
-    app.run()
-    save_personal_data(app.personal_data)
+    try:
+        app.run()
+    except KeyboardInterrupt:
+        cli.display_closing_msg()
+    finally:
+        if app.personal_data:
+            save_personal_data(app.personal_data)
 
 
 if __name__ == "__main__":

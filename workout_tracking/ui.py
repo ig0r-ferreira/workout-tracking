@@ -43,3 +43,6 @@ class UI(Protocol):
 
     def display_personal_data(self, person: Person) -> None:
         raise NotImplementedError()
+
+    def display_closing_msg(self) -> None:
+        raise NotImplementedError()

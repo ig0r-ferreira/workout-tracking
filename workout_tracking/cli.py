@@ -100,3 +100,7 @@ class CLI:
     def display_personal_data(person: Person) -> None:
         for key, value in person:
             print(f"{key.upper()}: {value}")
+
+    @staticmethod
+    def display_closing_msg() -> None:
+        print("\nThank you for using the APP. Until the next!")
